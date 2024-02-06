@@ -11,7 +11,6 @@ async function shopifyOrderDetail(orderID) {
 
     // shopify api에서 주문id에 해당하는 상품id를 갖어오기.
     const {orders} = await shopifyOrderItemsObject();
-    console.log('orders :', orders);
     orders.filter(item => {if(item.id == orderID){
       orderDetailObject.productOrderDate = item.created_at;
       orderDetailObject.productId = item.line_items[0].product_id;
