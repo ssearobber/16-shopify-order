@@ -14,7 +14,7 @@ async function shopifyOrderDetail(orderID) {
         for (let i = 0; i < item.line_items.length; i++) {
           // 새 객체를 반복문의 각 단계에서 생성
           let orderDetailObject = {
-            productOrderDate: item.created_at,
+            productOrderDate: removeAfterT(item.created_at),
             productId: item.line_items[i].product_id,
             productCount: item.line_items[i].quantity,
             productColor: item.line_items[i].variant_title,
@@ -46,6 +46,10 @@ async function shopifyOrderDetail(orderID) {
     console.error(e);
     return []; // 에러가 발생한 경우 빈 배열 반환
   }
+}
+
+function removeAfterT(str) {
+  return str.split('T')[0];
 }
 
 module.exports.shopifyOrderDetail = shopifyOrderDetail;
