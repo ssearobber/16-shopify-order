@@ -15,6 +15,8 @@ shopifyOrderIdObject("id","name").then(orderIDArray =>
     // 受注가 없다면 프로그램 종료
     if (orderIDArray.orders.length === 0) process.exit();
 
+    //TODO: 여기서 쇼피파이 주문데이터 전체를 불러오기. await shopifyOrderDetail(orderID);
+
     // 구글 스프레드 시트(受注list)에서  주문ID가 있는지 확인
     orderIDArray.orders.asyncForEach(async (orderIDObject) => {
 

@@ -26,11 +26,11 @@ async function googleOrderSheet(orderID, orderName) {
   const rows = await sheet.getRows();
 
   // 구글 시트(受注list)에 주문ID가 존재하는지 확인
-  let orderDetailObject;
+  let orderDetailObjectArray;
   let isOrderID = false;
   for (i = 1; i < rows.length; i++) {
     // 구글 시트(受注list)에 주문ID가 존재하는 경우 패스
-    if (rows[i].orderID == orderID) {
+    if (rows[i].orderID == orderID && rows[i].orderName == orderName) {
       isOrderID = true;
       break;
     }
@@ -38,30 +38,34 @@ async function googleOrderSheet(orderID, orderName) {
   // buyma 주문 상세페이지에서 정보 취득
   // 구글 시트(利益計算)에서 값을 취득 함
   if (!isOrderID) {
-    orderDetailObject = await shopifyOrderDetail(orderID);
-    // 구글 시트(受注list)에 값입력
-    for (i = 1; i < rows.length; i++) {
-      // row 추가
-      if (!rows[i].orderID) {
-        rows[i].orderName = orderName;
-        rows[i].orderID = orderDetailObject.orderID;
-        rows[i].productOrderDate = orderDetailObject.productOrderDate;
-        rows[i].peculiarities = orderDetailObject.peculiarities;
-        rows[i].rowNum = orderDetailObject.rowNum;
-        rows[i].productURL = orderDetailObject.productURL;
-        rows[i].productCount = orderDetailObject.productCount;
-        rows[i].productColor = orderDetailObject.productColor;
-        rows[i].productDeliveryMethod = orderDetailObject.productDeliveryMethod;
-        rows[i].productCustomerENName = orderDetailObject.productCustomerENName;
-        rows[i].productCustomerPostalCode = orderDetailObject.productCustomerPostalCode;
-        rows[i].productCustomerENAddress = orderDetailObject.productCustomerENAddress;
-        rows[i].productProfit = orderDetailObject.productProfit;
-        rows[i].productDeadlineDate = orderDetailObject.productDeadlineDate;
-
-        rows[i].save();
-        break;
+    //FIXME: 쇼피파이의 api를 여러번 부를필요가 없음. -> 나중에 매게변수로 전달 받기.
+    orderDetailObjectArray = await shopifyOrderDetail(orderID);
+    if(orderDetailObjectArray.length > 0) {
+      for (j = 0; j < orderDetailObjectArray.length; j++) {
+        // 구글 시트(受注list)에 값입력
+        for (i = 1; i < rows.length; i++) {
+          // row 추가
+          if (!rows[i].orderID && !rows[i].orderName) {
+            rows[i].orderName = orderName;
+            rows[i].orderID = orderDetailObjectArray[j].orderID;
+            rows[i].productOrderDate = orderDetailObjectArray[j].productOrderDate;
+            rows[i].peculiarities = orderDetailObjectArray[j].peculiarities;
+            rows[i].rowNum = orderDetailObjectArray[j].rowNum;
+            rows[i].productURL = orderDetailObjectArray[j].productURL;
+            rows[i].productCount = orderDetailObjectArray[j].productCount;
+            rows[i].productColor = orderDetailObjectArray[j].productColor;
+            rows[i].productDeliveryMethod = orderDetailObjectArray[j].productDeliveryMethod;
+            rows[i].productCustomerENName = orderDetailObjectArray[j].productCustomerENName;
+            rows[i].productCustomerPostalCode = orderDetailObjectArray[j].productCustomerPostalCode;
+            rows[i].productCustomerENAddress = orderDetailObjectArray[j].productCustomerENAddress;
+            rows[i].productProfit = orderDetailObjectArray[j].productProfit;
+            rows[i].productDeadlineDate = orderDetailObjectArray[j].productDeadlineDate;
+            rows[i].save();
+            break;
+          }
+        }
       }
-    }
+    }  
   }
 }
 
