@@ -19,9 +19,9 @@ async function shopifyOrderDetail(orderID) {
             productId: item.line_items[i].product_id,
             productCount: item.line_items[i].quantity,
             productColor: item.line_items[i].variant_title,
-            productCustomerENName: item.shipping_address.name,
-            productCustomerPostalCode: item.shipping_address.zip,
-            productCustomerENAddress: (item.shipping_address.province ?? "") + (item.shipping_address.city ?? "") + (item.shipping_address.address1 ?? "") + (item.shipping_address.address2 ?? ""),
+            productCustomerENName: item.shipping_address?.name,
+            productCustomerPostalCode: item.shipping_address?.zip,
+            productCustomerENAddress: (item.shipping_address?.province ?? "") + (item.shipping_address?.city ?? "") + (item.shipping_address?.address1 ?? "") + (item.shipping_address?.address2 ?? ""),
             productDeliveryMethod: 'KSE',
           };
 
