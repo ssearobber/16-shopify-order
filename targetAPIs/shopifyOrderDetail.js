@@ -11,6 +11,7 @@ async function shopifyOrderDetail(orderID) {
     // orders를 동기적으로 처리하기 위해 for...of 사용
     for (let item of orders) {
       if (item.id == orderID) {
+        console.log("대상 주문ID : ", orderID);
         for (let i = 0; i < item.line_items.length; i++) {
           // 새 객체를 반복문의 각 단계에서 생성
           let orderDetailObject = {
