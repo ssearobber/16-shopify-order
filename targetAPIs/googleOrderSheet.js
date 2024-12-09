@@ -60,6 +60,7 @@ async function googleOrderSheet(orderID, orderName) {
             rows[i].productCustomerENAddress = orderDetailObjectArray[j].productCustomerENAddress;
             rows[i].productProfit = orderDetailObjectArray[j].productProfit;
             rows[i].productDeadlineDate = orderDetailObjectArray[j].productDeadlineDate;
+            rows[i].productId = orderDetailObjectArray[j].productId;
             rows[i].save();
             break;
           }
