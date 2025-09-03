@@ -27,13 +27,13 @@ async function googleProfitSheet(productId) {
   // 해당 상품ID의 row번호, url을 취득
   let googleProfitObject = {};
   for (i = 1; i < rows.length; i++) {
-    if (!rows[i].productId) continue;
+    if (!rows[i].shopifyProductId) continue;
     // 해당 상품ID가 존재하는 row
-    if (rows[i].productId.match(/\d{13}/g) == productId) {
+    if (rows[i].shopifyProductId.match(/\d{13}/g) == productId) {
       googleProfitObject.rowNum = i + 2;
       googleProfitObject.peculiarities = rows[i].peculiarities;
       googleProfitObject.productURL = rows[i].productURL;
-      googleProfitObject.kseProfit = rows[i].kseProfit.replace(/[^0-9]/g, '');
+      googleProfitObject.shopifyProfit = rows[i].shopifyProfit.replace(/[^0-9]/g, '');
     }
   }
 

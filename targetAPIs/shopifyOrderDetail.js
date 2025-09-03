@@ -32,7 +32,7 @@ async function shopifyOrderDetail(orderID) {
           // 나머지 속성 설정
           orderDetailObject.rowNum = googleProfitObject.rowNum;
           orderDetailObject.productURL = googleProfitObject.productURL;
-          orderDetailObject.productProfit = googleProfitObject.kseProfit * orderDetailObject.productCount;
+          orderDetailObject.productProfit = googleProfitObject.shopifyProfit * orderDetailObject.productCount;
           orderDetailObject.orderID = orderID;
           orderDetailObject.peculiarities = googleProfitObject.peculiarities;
 
