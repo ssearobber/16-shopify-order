@@ -19,8 +19,11 @@ shopifyServiceAxiosInstance.interceptors.response.use(
   },
 
   function (error) {
-    console.error(error.message);
-
+    console.error('Shopify API 오류:', error.message);
+    if (error.response) {
+      console.error('응답 상태:', error.response.status);
+      console.error('응답 데이터:', error.response.data);
+    }
     return Promise.reject(error);
   },
 );

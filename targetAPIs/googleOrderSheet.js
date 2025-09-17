@@ -2,9 +2,24 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { shopifyOrderDetail } = require('./shopifyOrderDetail');
 
 async function googleOrderSheet(orderID, orderName) {
-  // 시트 url중 값
-  // Initialize the sheet - doc ID is the long id in the sheets URL
-  const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREAD_ID || googleSpreadId);
+  try {
+    // 환경변수 확인
+    if (!process.env.GOOGLE_SPREAD_ID) {
+      throw new Error('GOOGLE_SPREAD_ID 환경변수가 설정되지 않았습니다.');
+    }
+    if (!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL) {
+      throw new Error('GOOGLE_SERVICE_ACCOUNT_EMAIL 환경변수가 설정되지 않았습니다.');
+    }
+    if (!process.env.GOOGLE_PRIVATE_KEY) {
+      throw new Error('GOOGLE_PRIVATE_KEY 환경변수가 설정되지 않았습니다.');
+    }
+    if (!process.env.GOOGLE_ORDER_SHEET_ID) {
+      throw new Error('GOOGLE_ORDER_SHEET_ID 환경변수가 설정되지 않았습니다.');
+    }
+
+    // 시트 url중 값
+    // Initialize the sheet - doc ID is the long id in the sheets URL
+    const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREAD_ID || googleSpreadId);
 
   // GOOGLE_API_KEY로 구글API다루는 방법. 읽는것만 가능.
   // doc.useApiKey(process.env.GOOGLE_API_KEY);
@@ -67,6 +82,10 @@ async function googleOrderSheet(orderID, orderName) {
         }
       }
     }  
+  }
+  } catch (error) {
+    console.error(`구글 시트 처리 중 오류 발생 (주문 ID: ${orderID}):`, error.message);
+    throw error;
   }
 }
 
